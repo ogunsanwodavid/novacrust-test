@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+
+import Image from "next/image";
 
 import ChevronDown from "../icons/ChevronDown";
-import Image from "next/image";
 
 export interface CurrencyOption {
   name: string;
@@ -12,47 +13,63 @@ export interface CurrencyOption {
 }
 
 interface PaymentSelectProps {
-  initialCurrency: string;
+  heading: string;
+  editable: boolean;
   currenyOptions: CurrencyOption[];
+  amount: number;
+  setAmount: Dispatch<SetStateAction<number>>;
+  currency: string;
+  setCurrency: Dispatch<SetStateAction<string>>;
+  openSelect: boolean;
+  setOpenSelect: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function PaymentSelect({
-  initialCurrency,
+  heading,
+  editable,
   currenyOptions,
+  amount,
+  setAmount,
+  currency,
+  setCurrency,
+  openSelect,
+  setOpenSelect,
 }: PaymentSelectProps) {
-  const [value, setValue] = useState<number>(1.0);
-
-  const [currency, setCurrency] = useState<string>(initialCurrency);
-
-  const [openCurrencySelect, setOpenCurrencySelect] = useState<boolean>(false);
-
   return (
     <div className="w-full rounded-[30px] border border-grey-3 p-6 space-y-2">
-      <p className="text-grey-2 text-base font-medium md:text-lg">You pay</p>
+      <h3 className="text-grey-2 text-base font-medium md:text-lg">
+        {heading}
+      </h3>
 
-      <section className="w-full flex  items-center justify-between gap-x-4">
-        <input
-          type="text"
-          //Allow only digits and decimal point "." in input
-          onChange={(e) => {
-            e.target.value = e.target.value.replace(/[^0-9.]/g, "");
-          }}
-          className="w-max outline-0 text-2xl text-black font-semibold"
-        />
+      <section className="relative w-full flex  items-center justify-between gap-x-4">
+        {editable ? (
+          <input
+            type="text"
+            value={amount}
+            //Allow only digits and decimal point "." in input
+            onChange={(e) => {
+              const value = e.target.value.replace(/[^0-9.]/g, "");
+              setAmount(Number(value));
+            }}
+            className="w-full outline-0 text-2xl text-black font-semibold"
+          />
+        ) : (
+          <p className="text-2xl text-black font-semibold">{amount}</p>
+        )}
 
         {/** Currency select */}
         <div className="relative w-max py-2 px-3  bg-grey-4 border border-grey-3 rounded-full cursor-pointer">
           {/** Main Display */}
           <main
             className="flex gap-x-1 items-center md:gap-x-2"
-            onClick={() => setOpenCurrencySelect((state) => !state)}
+            onClick={() => setOpenSelect((state) => !state)}
           >
             {/** Currency logo */}
             <Image
               src={
                 currenyOptions.find((option) => option.name === currency)?.logo!
               }
-              className="h-5 rounded-full shrink-0 md:h-7"
+              className="h-5 shrink-0"
               height={20}
               width={20}
               alt={currency}
@@ -69,7 +86,7 @@ export default function PaymentSelect({
             {/** Chevron down */}
             <span
               className={`inline-block transition-all duration-250 ${
-                openCurrencySelect && "-rotate-180"
+                openSelect && "-rotate-180"
               }`}
             >
               <ChevronDown size="20" />
@@ -78,18 +95,20 @@ export default function PaymentSelect({
 
           {/** Options */}
           <section
-            className={`z-5 absolute top-full -right-2 mt-1 py-3 px-4 bg-white border border-grey-3 rounded-[20px] transition-all duration-250 ${
-              openCurrencySelect ? "visible" : "invisible"
+            className={`z-5 absolute w-62.5 top-full -right-2 mt-1 py-3 px-4 bg-white border border-grey-3 rounded-[20px] transition-all duration-250 ${
+              openSelect ? "visible" : "invisible"
             }`}
           >
             {currenyOptions.map((option) => {
+              //Function to select a currency option
               function handleSelectOption() {
-                setOpenCurrencySelect(false);
+                setOpenSelect(false);
                 setCurrency(option.name);
               }
 
               return (
                 <div
+                  key={option.symbol}
                   className={`flex items-center gap-x-2 gap-y-1 py-3 px-4 rounded-xl ${
                     option.name === currency && "bg-grey-5"
                   }`}
@@ -105,7 +124,7 @@ export default function PaymentSelect({
                   />
 
                   {/** Name */}
-                  <p className="uppercase text-black text-[14px] font-medium md:text-base">
+                  <p className="capitalize text-black text-[14px] font-medium md:text-base">
                     {option.name}
                   </p>
                 </div>
