@@ -2,10 +2,19 @@
 
 import { useEffect, useState } from "react";
 
+import Link from "next/link";
+
+import { useRouter } from "next/navigation";
+
 import PaymentSelect, { CurrencyOption } from "./PaymentSelect";
+
 import Select, { SelectOption } from "../../ui/global/Select";
+import Button from "../../ui/global/Button";
 
 export default function CryptoPayment() {
+  //Router function
+  const router = useRouter();
+
   //You pay variables
   const [youPayAmount, setYouPayAmount] = useState<string>("0.00");
 
@@ -92,6 +101,19 @@ export default function CryptoPayment() {
     },
   ];
 
+  //State to monitor if user can convert currency after filling form
+  const canUserConvert: boolean =
+    Number(youPayAmount) > 0 &&
+    Number(youReceiveAmount) > 0 &&
+    youPayFrom !== "";
+
+  //Function to convert
+  function convertCrypto() {
+    if (!canUserConvert) return;
+
+    router.push("/crypto-to-cash/step/2");
+  }
+
   //Close other selects if the one is open
   useEffect(() => {
     if (youPayOpenSelect) {
@@ -174,6 +196,15 @@ export default function CryptoPayment() {
         openSelect={youPayFromOpenSelect}
         setOpenSelect={setYouPayFromOpenSelect}
       />
+
+      {/** Convert now button
+       * DISABLE TILL ALL NEEDED VARIABLES ARE FILLED
+       */}
+      <div className="mt-10!">
+        <Button disabled={!canUserConvert} onClick={convertCrypto}>
+          Convert now
+        </Button>
+      </div>
     </div>
   );
 }
