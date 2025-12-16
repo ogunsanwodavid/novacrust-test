@@ -2,6 +2,8 @@ import { ReactNode, Suspense } from "react";
 
 import type { Metadata } from "next";
 
+import LayoutContent from "./components/ui/global/LayoutContent";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning>
-        <Suspense fallback={null}>{children}</Suspense>
+        <Suspense fallback={null}>
+          <LayoutContent>{children}</LayoutContent>
+        </Suspense>
       </body>
     </html>
   );
