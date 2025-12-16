@@ -9,11 +9,11 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <div className="w-max mx-auto flex gap-x-1 bg-grey-1 rounded-full">
+    <div className="w-max max-w-full mx-auto flex gap-x-1 bg-grey-1 rounded-full text-[12px] font-medium sm:text-[14px] md:text-base">
       {/** Crypto to cash */}
       <Link
         href="/crypto-to-cash"
-        className={`py-2 px-4 text-[14px] font-medium rounded-full md:text-base ${
+        className={`py-2 px-4 rounded-full  ${
           pathname.startsWith("/crypto-to-cash")
             ? "bg-green text-white"
             : "bg-transparent text-grey-2"
@@ -25,7 +25,7 @@ export default function Navigation() {
       {/** Cash to Crypto */}
       <Link
         href="/cash-to-crypto"
-        className={`py-2 px-4 text-[14px] font-medium rounded-full md:text-base ${
+        className={`py-2 px-4 rounded-full ${
           pathname === "/cash-to-crypto"
             ? "bg-green text-white"
             : "bg-transparent text-grey-2"
@@ -37,7 +37,7 @@ export default function Navigation() {
       {/** Crypto to Flat Loan */}
       <Link
         href="/crypto-to-flat"
-        className={`py-2 px-4 text-[14px] font-medium rounded-full md:text-base ${
+        className={`py-2 px-4 rounded-full ${
           pathname === "/crypto-to-flat"
             ? "bg-green text-white"
             : "bg-transparent text-grey-2"

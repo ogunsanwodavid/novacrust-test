@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 
 import Image from "next/image";
 
-import ChevronDown from "../icons/ChevronDown";
+import ChevronDown from "../../ui/icons/ChevronDown";
 
 export interface CurrencyOption {
   name: string;
@@ -16,8 +16,8 @@ interface PaymentSelectProps {
   heading: string;
   editable: boolean;
   currenyOptions: CurrencyOption[];
-  amount: number;
-  setAmount: Dispatch<SetStateAction<number>>;
+  amount: string;
+  setAmount: Dispatch<SetStateAction<string>>;
   currency: string;
   setCurrency: Dispatch<SetStateAction<string>>;
   openSelect: boolean;
@@ -37,11 +37,15 @@ export default function PaymentSelect({
 }: PaymentSelectProps) {
   return (
     <div className="w-full rounded-[30px] border border-grey-3 p-6 space-y-2">
+      {/** Heading */}
       <h3 className="text-grey-2 text-base font-medium md:text-lg">
         {heading}
       </h3>
 
       <section className="relative w-full flex  items-center justify-between gap-x-4">
+        {/** Show input if component editable
+         *  OR static display of amount
+         */}
         {editable ? (
           <input
             type="text"
@@ -49,17 +53,25 @@ export default function PaymentSelect({
             //Allow only digits and decimal point "." in input
             onChange={(e) => {
               const value = e.target.value.replace(/[^0-9.]/g, "");
-              setAmount(Number(value));
+              setAmount(value);
+            }}
+            //Reset input value if user exits with empty value
+            onBlur={(e) => {
+              if (e.target.value === "") {
+                setAmount("0.00");
+              }
             }}
             className="w-full outline-0 text-2xl text-black font-semibold"
           />
         ) : (
-          <p className="text-2xl text-black font-semibold">{amount}</p>
+          <p className="text-2xl text-black font-semibold cursor-pointer line-clamp-1 whitespace-nowrap text-ellipsis">
+            {amount}
+          </p>
         )}
 
         {/** Currency select */}
         <div className="relative w-max py-2 px-3  bg-grey-4 border border-grey-3 rounded-full cursor-pointer">
-          {/** Main Display */}
+          {/** Display */}
           <main
             className="flex gap-x-1 items-center md:gap-x-2"
             onClick={() => setOpenSelect((state) => !state)}
@@ -69,7 +81,7 @@ export default function PaymentSelect({
               src={
                 currenyOptions.find((option) => option.name === currency)?.logo!
               }
-              className="h-5 shrink-0"
+              className="h-5 w-5 rounded-full shrink-0"
               height={20}
               width={20}
               alt={currency}
@@ -85,7 +97,7 @@ export default function PaymentSelect({
 
             {/** Chevron down */}
             <span
-              className={`inline-block transition-all duration-250 ${
+              className={`inline-block transition-all duration-200 ${
                 openSelect && "-rotate-180"
               }`}
             >
@@ -95,7 +107,7 @@ export default function PaymentSelect({
 
           {/** Options */}
           <section
-            className={`z-5 absolute w-62.5 top-full -right-2 mt-1 py-3 px-4 bg-white border border-grey-3 rounded-[20px] transition-all duration-250 ${
+            className={`z-5 absolute w-62.5 max-h-42.5 overflow-y-scroll top-full -right-2 mt-1 py-3 px-4 bg-white border border-grey-3 rounded-[20px] transition-all duration-200 ${
               openSelect ? "visible" : "invisible"
             }`}
           >
@@ -117,7 +129,7 @@ export default function PaymentSelect({
                   {/** Logo */}
                   <Image
                     src={option.logo}
-                    className="h-6 shrink-0"
+                    className="h-6 w-6 rounded-full shrink-0"
                     height={24}
                     width={24}
                     alt={option.name}
