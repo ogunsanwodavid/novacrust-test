@@ -6,6 +6,10 @@ import Link from "next/link";
 
 import { useRouter } from "next/navigation";
 
+import { useAppDispatch, useAppSelector } from "@/app/hooks/global/redux";
+
+import { setConversion } from "@/app/redux/slices/crypto-to-cash/cryptoToCashSlice";
+
 import PaymentSelect, { CurrencyOption } from "./PaymentSelect";
 
 import Select, { SelectOption } from "../../ui/global/Select";
@@ -15,10 +19,20 @@ export default function CryptoPayment() {
   //Router function
   const router = useRouter();
 
-  //You pay variables
-  const [youPayAmount, setYouPayAmount] = useState<string>("0.00");
+  //Redux dispatch function
+  const dispatch = useAppDispatch();
 
-  const [youPayCurrency, setYouPayCurrency] = useState<string>("Ethereum");
+  //Crypto to cash step state from redux
+  const cryptoToCash = useAppSelector((state) => state.cryptoToCash);
+
+  //You pay variables
+  const [youPayAmount, setYouPayAmount] = useState<string>(
+    cryptoToCash.conversion.youPayAmount
+  );
+
+  const [youPayCurrency, setYouPayCurrency] = useState<string>(
+    cryptoToCash.conversion.youPayCurrency
+  );
 
   const [youPayOpenSelect, setYouPayOpenSelect] = useState<boolean>(false);
 
@@ -46,10 +60,13 @@ export default function CryptoPayment() {
   ];
 
   //You receive variables
-  const [youReceiveAmount, setYouReceiveAmount] = useState<string>("0.00");
+  const [youReceiveAmount, setYouReceiveAmount] = useState<string>(
+    cryptoToCash.conversion.youReceiveAmount
+  );
 
-  const [youReceiveCurrency, setYouReceiveCurrency] =
-    useState<string>("Nigerian Naira");
+  const [youReceiveCurrency, setYouReceiveCurrency] = useState<string>(
+    cryptoToCash.conversion.youReceiveCurrency
+  );
 
   const [youReceiveOpenSelect, setYouReceiveOpenSelect] =
     useState<boolean>(false);
@@ -73,7 +90,9 @@ export default function CryptoPayment() {
   ];
 
   //You pay from variables
-  const [youPayFrom, setYouPayFrom] = useState<string>("");
+  const [youPayFrom, setYouPayFrom] = useState<string>(
+    cryptoToCash.conversion.youPayFrom
+  );
 
   const [youPayFromOpenSelect, setYouPayFromOpenSelect] =
     useState<boolean>(false);
@@ -110,6 +129,17 @@ export default function CryptoPayment() {
   //Function to convert
   function convertCrypto() {
     if (!canUserConvert) return;
+
+    //Dispatch changes to redux store
+    dispatch(
+      setConversion({
+        youPayAmount,
+        youPayCurrency,
+        youReceiveAmount,
+        youReceiveCurrency,
+        youPayFrom,
+      })
+    );
 
     router.push("/crypto-to-cash/step/2");
   }

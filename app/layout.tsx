@@ -2,6 +2,8 @@ import { ReactNode, Suspense } from "react";
 
 import type { Metadata } from "next";
 
+import Providers from "./providers";
+
 import LayoutContent from "./components/ui/global/LayoutContent";
 
 import "./globals.css";
@@ -26,7 +28,9 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning>
         <Suspense fallback={null}>
-          <LayoutContent>{children}</LayoutContent>
+          <Providers>
+            <LayoutContent>{children}</LayoutContent>
+          </Providers>
         </Suspense>
       </body>
     </html>
