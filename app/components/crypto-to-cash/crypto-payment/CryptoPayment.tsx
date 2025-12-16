@@ -8,12 +8,80 @@ import { useRouter } from "next/navigation";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/global/redux";
 
-import { setConversion } from "@/app/redux/slices/crypto-to-cash/cryptoToCashSlice";
+import {
+  setConversion,
+  setCurrentStep,
+} from "@/app/redux/slices/crypto-to-cash/cryptoToCashSlice";
 
 import PaymentSelect, { CurrencyOption } from "./PaymentSelect";
 
 import Select, { SelectOption } from "../../ui/global/Select";
 import Button from "../../ui/global/Button";
+
+//Input and Select options
+export const youPayCurrencyOptions: CurrencyOption[] = [
+  {
+    name: "Ethereum",
+    symbol: "ETH",
+    logo: "/static/crypto-to-cash/ethereum.svg",
+  },
+  {
+    name: "Bitcoin",
+    symbol: "BTC",
+    logo: "/static/crypto-to-cash/bitcoin.svg",
+  },
+  {
+    name: "Solana",
+    symbol: "SOL",
+    logo: "/static/crypto-to-cash/solana.svg",
+  },
+  {
+    name: "Tether USD",
+    symbol: "USDT",
+    logo: "/static/crypto-to-cash/usdt.svg",
+  },
+];
+
+export const youReceiveCurrencyOptions: CurrencyOption[] = [
+  {
+    name: "Nigerian Naira",
+    symbol: "NGN",
+    logo: "/static/crypto-to-cash/nigeria.svg",
+  },
+  {
+    name: "U.S Dollar",
+    symbol: "USD",
+    logo: "/static/crypto-to-cash/america.svg",
+  },
+  {
+    name: "Canadian Dollar",
+    symbol: "CAD",
+    logo: "/static/crypto-to-cash/canada.svg",
+  },
+];
+
+export const youPayFromOptions: SelectOption[] = [
+  {
+    value: "metamask",
+    name: "Metamask",
+    logo: "/static/crypto-to-cash/metamask.svg",
+  },
+  {
+    value: "rainbow",
+    name: "Rainbow",
+    logo: "/static/crypto-to-cash/rainbow.svg",
+  },
+  {
+    value: "wallet-connect",
+    name: "WalletConnect",
+    logo: "/static/crypto-to-cash/wallet-connect.svg",
+  },
+  {
+    value: "other-wallets",
+    name: "Other Crypto Wallets (Binance, Conibase, Bybit etc)",
+    logo: "/static/crypto-to-cash/other-wallets.svg",
+  },
+];
 
 export default function CryptoPayment() {
   //Router function
@@ -36,29 +104,6 @@ export default function CryptoPayment() {
 
   const [youPayOpenSelect, setYouPayOpenSelect] = useState<boolean>(false);
 
-  const youPayCurrencyOptions: CurrencyOption[] = [
-    {
-      name: "Ethereum",
-      symbol: "ETH",
-      logo: "/static/crypto-to-cash/ethereum.svg",
-    },
-    {
-      name: "Bitcoin",
-      symbol: "BTC",
-      logo: "/static/crypto-to-cash/bitcoin.svg",
-    },
-    {
-      name: "Solana",
-      symbol: "SOL",
-      logo: "/static/crypto-to-cash/solana.svg",
-    },
-    {
-      name: "Tether USD",
-      symbol: "USDT",
-      logo: "/static/crypto-to-cash/usdt.svg",
-    },
-  ];
-
   //You receive variables
   const [youReceiveAmount, setYouReceiveAmount] = useState<string>(
     cryptoToCash.conversion.youReceiveAmount
@@ -71,24 +116,6 @@ export default function CryptoPayment() {
   const [youReceiveOpenSelect, setYouReceiveOpenSelect] =
     useState<boolean>(false);
 
-  const youReceiveCurrencyOptions: CurrencyOption[] = [
-    {
-      name: "Nigerian Naira",
-      symbol: "NGN",
-      logo: "/static/crypto-to-cash/nigeria.svg",
-    },
-    {
-      name: "U.S Dollar",
-      symbol: "USD",
-      logo: "/static/crypto-to-cash/america.svg",
-    },
-    {
-      name: "Canadian Dollar",
-      symbol: "CAD",
-      logo: "/static/crypto-to-cash/canada.svg",
-    },
-  ];
-
   //You pay from variables
   const [youPayFrom, setYouPayFrom] = useState<string>(
     cryptoToCash.conversion.youPayFrom
@@ -96,29 +123,6 @@ export default function CryptoPayment() {
 
   const [youPayFromOpenSelect, setYouPayFromOpenSelect] =
     useState<boolean>(false);
-
-  const youPayFromOptions: SelectOption[] = [
-    {
-      value: "metamask",
-      name: "Metamask",
-      logo: "/static/crypto-to-cash/metamask.svg",
-    },
-    {
-      value: "rainbow",
-      name: "Rainbow",
-      logo: "/static/crypto-to-cash/rainbow.svg",
-    },
-    {
-      value: "wallet-connect",
-      name: "WalletConnect",
-      logo: "/static/crypto-to-cash/wallet-connect.svg",
-    },
-    {
-      value: "other-wallets",
-      name: "Other Crypto Wallets (Binance, Conibase, Bybit etc)",
-      logo: "/static/crypto-to-cash/other-wallets.svg",
-    },
-  ];
 
   //State to monitor if user can convert currency after filling form
   const canUserConvert: boolean =
@@ -131,6 +135,7 @@ export default function CryptoPayment() {
     if (!canUserConvert) return;
 
     //Dispatch changes to redux store
+    dispatch(setCurrentStep(2));
     dispatch(
       setConversion({
         youPayAmount,

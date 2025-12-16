@@ -6,7 +6,10 @@ import { useRouter } from "next/navigation";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/global/redux";
 
-import { setRecipientField } from "@/app/redux/slices/crypto-to-cash/cryptoToCashSlice";
+import {
+  setCurrentStep,
+  setRecipientField,
+} from "@/app/redux/slices/crypto-to-cash/cryptoToCashSlice";
 
 import PhoneNumberInput from "./PhoneNumberInput";
 
@@ -45,6 +48,7 @@ export default function RecipientDetails2() {
     if (!canUserNext) return;
 
     //Dispatch changes to redux store
+    dispatch(setCurrentStep(4));
     dispatch(
       setRecipientField({
         email: recipientEmail,

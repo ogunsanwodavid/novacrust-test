@@ -6,7 +6,10 @@ import { useRouter } from "next/navigation";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks/global/redux";
 
-import { setRecipientField } from "@/app/redux/slices/crypto-to-cash/cryptoToCashSlice";
+import {
+  setCurrentStep,
+  setRecipientField,
+} from "@/app/redux/slices/crypto-to-cash/cryptoToCashSlice";
 
 import Select, { SelectOption } from "../../ui/global/Select";
 import Input from "../../ui/global/Input";
@@ -71,6 +74,7 @@ export default function RecipientDetails1() {
     if (!canUserNext) return;
 
     //Dispatch changes to redux store
+    dispatch(setCurrentStep(3));
     dispatch(
       setRecipientField({
         bank,

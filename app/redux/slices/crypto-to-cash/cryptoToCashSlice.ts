@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface CryptoToCashState {
+  currentStep: number;
   conversion: {
     youPayAmount: string;
     youPayCurrency: string;
@@ -18,6 +19,7 @@ export interface CryptoToCashState {
 }
 
 const initialState: CryptoToCashState = {
+  currentStep: 1,
   conversion: {
     youPayAmount: "0.00",
     youPayCurrency: "Ethereum",
@@ -38,6 +40,11 @@ const cryptoToCashSlice = createSlice({
   name: "cryptoToCash",
   initialState,
   reducers: {
+    //Set current step
+    setCurrentStep(state, action: PayloadAction<number>) {
+      state.currentStep = action.payload;
+    },
+
     //replace entire conversion object
     setConversion(
       state,
@@ -46,7 +53,7 @@ const cryptoToCashSlice = createSlice({
       state.conversion = action.payload;
     },
 
-    // update one or more recipient fields at once
+    //update one or more recipient fields at once
     setRecipientField(
       state,
       action: PayloadAction<Partial<CryptoToCashState["recipient"]>>
@@ -61,7 +68,7 @@ const cryptoToCashSlice = createSlice({
   },
 });
 
-export const { setConversion, setRecipientField, resetState } =
+export const { setCurrentStep, setConversion, setRecipientField, resetState } =
   cryptoToCashSlice.actions;
 
 export default cryptoToCashSlice.reducer;

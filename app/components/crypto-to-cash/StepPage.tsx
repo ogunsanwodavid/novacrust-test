@@ -4,6 +4,8 @@ import RecipientDetails1 from "./recipient-details-1/RecipientDetails1";
 
 import RecipientDetails2 from "./recipient-details-2/RecipientDetails2";
 
+import SendCrypto from "./send-crypto/SendCrypto";
+
 interface StepPageProps {
   step: number;
 }
@@ -19,6 +21,9 @@ export default function StepPage({ step }: StepPageProps) {
 
       {/** Recipient Details 2 */}
       {step === 3 && <RecipientDetails2 />}
+
+      {/** Send Crypto */}
+      {step === 4 && <SendCrypto />}
     </div>
   );
 }

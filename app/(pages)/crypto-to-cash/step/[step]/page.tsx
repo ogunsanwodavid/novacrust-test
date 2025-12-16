@@ -4,7 +4,7 @@ import StepPage from "@/app/components/crypto-to-cash/StepPage";
 
 type paramsType = Promise<{ step: string }>;
 
-interface CreateEventStepLayoutProps {
+interface CreateEventStepPageProps {
   children: ReactNode;
   params: paramsType;
 }
@@ -12,7 +12,7 @@ interface CreateEventStepLayoutProps {
 export default async function CryptoToCashStepPage({
   children,
   params,
-}: CreateEventStepLayoutProps) {
+}: CreateEventStepPageProps) {
   //Params
   const { step } = await params;
 
