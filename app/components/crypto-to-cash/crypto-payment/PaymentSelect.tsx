@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, MouseEvent, SetStateAction, useState } from "react";
 
 import Image from "next/image";
 
@@ -70,12 +70,12 @@ export default function PaymentSelect({
         )}
 
         {/** Currency select */}
-        <div className="relative w-max py-2 px-3  bg-grey-4 border border-grey-3 rounded-full cursor-pointer">
+        <div
+          className="relative w-max py-2 px-3  bg-grey-4 border border-grey-3 rounded-full cursor-pointer"
+          onClick={() => setOpenSelect((state) => !state)}
+        >
           {/** Display */}
-          <main
-            className="flex gap-x-1 items-center md:gap-x-2"
-            onClick={() => setOpenSelect((state) => !state)}
-          >
+          <main className="flex gap-x-1 items-center md:gap-x-2">
             {/** Currency logo */}
             <Image
               src={
@@ -107,13 +107,14 @@ export default function PaymentSelect({
 
           {/** Options */}
           <section
-            className={`z-5 absolute w-62.5 max-h-42.5 overflow-y-scroll top-full -right-2 mt-1 py-3 px-4 bg-white border border-grey-3 rounded-[20px] transition-all duration-200 ${
+            className={`z-5 absolute w-62.5 max-h-42.5 overflow-y-auto top-full -right-2 mt-1 py-3 px-4 bg-white border border-grey-3 rounded-[20px] transition-all duration-200 ${
               openSelect ? "visible" : "invisible"
             }`}
           >
             {currenyOptions.map((option) => {
               //Function to select a currency option
-              function handleSelectOption() {
+              function handleSelectOption(e: MouseEvent<HTMLDivElement>) {
+                e.stopPropagation(); //prevent parent onClick
                 setOpenSelect(false);
                 setCurrency(option.name);
               }

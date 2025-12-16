@@ -46,15 +46,12 @@ const cryptoToCashSlice = createSlice({
       state.conversion = action.payload;
     },
 
-    //update any key in recipient
+    // update one or more recipient fields at once
     setRecipientField(
       state,
-      action: PayloadAction<{
-        key: keyof CryptoToCashState["recipient"];
-        value: string;
-      }>
+      action: PayloadAction<Partial<CryptoToCashState["recipient"]>>
     ) {
-      state.recipient[action.payload.key] = action.payload.value;
+      state.recipient = { ...state.recipient, ...action.payload };
     },
 
     //Reset everything
@@ -64,6 +61,7 @@ const cryptoToCashSlice = createSlice({
   },
 });
 
-export const { setConversion, setRecipientField } = cryptoToCashSlice.actions;
+export const { setConversion, setRecipientField, resetState } =
+  cryptoToCashSlice.actions;
 
 export default cryptoToCashSlice.reducer;

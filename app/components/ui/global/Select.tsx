@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, MouseEvent, SetStateAction } from "react";
 
 import Image from "next/image";
 
@@ -11,8 +11,8 @@ export interface SelectOption {
 }
 
 interface SelectProps {
-  heading: string;
-  noValueText: string;
+  label: string;
+  placeholder: string;
   options: SelectOption[];
   value: string;
   setValue: Dispatch<SetStateAction<string>>;
@@ -21,8 +21,8 @@ interface SelectProps {
 }
 
 export default function Select({
-  heading,
-  noValueText,
+  label,
+  placeholder,
   options,
   value,
   setValue,
@@ -31,16 +31,16 @@ export default function Select({
 }: SelectProps) {
   return (
     <div className="space-y-3">
-      {/** Heading */}
-      <h4 className="text-green font-medium text-base md:text-lg">{heading}</h4>
+      {/** Label */}
+      <p className="text-green font-medium text-base md:text-lg">{label}</p>
 
       {/** Main select */}
-      <main className="relative w-full px-6 py-4 border border-grey-3 rounded-full cursor-pointer">
+      <main
+        className="relative w-full px-6 py-4 border border-grey-3 rounded-full cursor-pointer"
+        onClick={() => setOpenSelect((state) => !state)}
+      >
         {/** Display section */}
-        <section
-          className="w-full flex items-center justify-between gap-x-2"
-          onClick={() => setOpenSelect((state) => !state)}
-        >
+        <section className="w-full flex items-center justify-between gap-x-2">
           {/** Show selected value and its logo
            * or custom no value text
            */}
@@ -60,7 +60,7 @@ export default function Select({
                 </span>
               </div>
             ) : (
-              noValueText
+              placeholder
             )}
           </div>
 
@@ -76,13 +76,14 @@ export default function Select({
 
         {/** Options */}
         <section
-          className={`z-5 absolute w-[calc(100%-32px)] max-h-42.5 overflow-y-scroll top-full left-0 ml-4 -mt-2 py-3 px-4 bg-white border border-grey-3 rounded-[20px] transition-all duration-200 ${
+          className={`z-5 absolute w-[calc(100%-32px)] max-h-42.5 overflow-y-auto top-full left-0 ml-4 -mt-2 py-3 px-4 bg-white border border-grey-3 rounded-[20px] transition-all duration-200 ${
             openSelect ? "visible" : "invisible"
           }`}
         >
           {options.map((option) => {
             //Function to select a select option
-            function handleSelectOption() {
+            function handleSelectOption(e: MouseEvent<HTMLDivElement>) {
+              e.stopPropagation(); //prevent parent onClick
               setOpenSelect(false);
               setValue(option.value);
             }
@@ -90,7 +91,7 @@ export default function Select({
             return (
               <div
                 key={option.value}
-                className={`flex items-center gap-x-2 gap-y-1 py-3 px-4 rounded-xl ${
+                className={`flex items-center gap-x-3 gap-y-1 py-3 px-4 rounded-xl ${
                   option.value === value && "bg-grey-5"
                 }`}
                 onClick={handleSelectOption}
@@ -105,7 +106,7 @@ export default function Select({
                 />
 
                 {/** Name */}
-                <p className="text-black text-[14px] font-medium line-clamp-1 whitespace-nowrap text-ellipsis md:text-base">
+                <p className="text-black text-[15px] font-medium line-clamp-1 whitespace-nowrap text-ellipsis md:text-[17px]">
                   {option.name}
                 </p>
               </div>

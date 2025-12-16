@@ -12,7 +12,7 @@ export default function Navigation() {
     <div className="w-max max-w-full mx-auto flex gap-x-1 bg-grey-1 rounded-full text-[12px] font-medium sm:text-[14px] md:text-base">
       {/** Crypto to cash */}
       <Link
-        href="/crypto-to-cash"
+        href="/crypto-to-cash/step/1"
         className={`py-2 px-4 rounded-full  ${
           pathname.startsWith("/crypto-to-cash")
             ? "bg-green text-white"

@@ -127,7 +127,7 @@ export default function CryptoPayment() {
     youPayFrom !== "";
 
   //Function to convert
-  function convertCrypto() {
+  function handleConvertCrypto() {
     if (!canUserConvert) return;
 
     //Dispatch changes to redux store
@@ -141,6 +141,7 @@ export default function CryptoPayment() {
       })
     );
 
+    //Route to next step
     router.push("/crypto-to-cash/step/2");
   }
 
@@ -218,8 +219,8 @@ export default function CryptoPayment() {
 
       {/** You pay from select */}
       <Select
-        heading="You pay from"
-        noValueText="Select an option"
+        label="You pay from"
+        placeholder="Select an option"
         options={youPayFromOptions}
         value={youPayFrom}
         setValue={setYouPayFrom}
@@ -231,7 +232,7 @@ export default function CryptoPayment() {
        * DISABLE TILL ALL NEEDED VARIABLES ARE FILLED
        */}
       <div className="mt-10!">
-        <Button disabled={!canUserConvert} onClick={convertCrypto}>
+        <Button disabled={!canUserConvert} onClick={handleConvertCrypto}>
           Convert now
         </Button>
       </div>
