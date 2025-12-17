@@ -6,6 +6,8 @@ import RecipientDetails2 from "./recipient-details-2/RecipientDetails2";
 
 import SendCrypto from "./send-crypto/SendCrypto";
 
+import ProcessingTransaction from "./processing-transaction/ProcessingTransaction";
+
 interface StepPageProps {
   step: number;
 }
@@ -24,6 +26,9 @@ export default function StepPage({ step }: StepPageProps) {
 
       {/** Send Crypto */}
       {step === 4 && <SendCrypto />}
+
+      {/** Processing Transaction */}
+      {step === 5 && <ProcessingTransaction />}
     </div>
   );
 }

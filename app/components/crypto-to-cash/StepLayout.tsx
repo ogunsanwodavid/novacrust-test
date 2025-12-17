@@ -21,7 +21,7 @@ export default function StepLayout({ children, step }: StepLayoutProps) {
   useEffect(() => {
     //Route to first step if user attempts to navigate to steps above current step
     //::RUN ONLY ON MOUNT
-    //if (step > currentStep) router.replace(`/crypto-to-cash/step/1`);
+    if (step > currentStep) router.replace(`/crypto-to-cash/step/1`);
   }, []);
 
   return <div className="w-full">{children}</div>;
