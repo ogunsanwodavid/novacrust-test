@@ -1,3 +1,5 @@
+import ComingSoon from "@/app/components/ui/global/ComingSoon";
+
 export default function CryptoToFlat() {
-  return <div></div>;
+  return <ComingSoon title="Crypto to Flat Loan" />;
 }

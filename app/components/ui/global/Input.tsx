@@ -1,9 +1,4 @@
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import { Dispatch, SetStateAction } from "react";
 
 interface InputProps {
   label: string;

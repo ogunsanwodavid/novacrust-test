@@ -1,3 +1,5 @@
+import ComingSoon from "@/app/components/ui/global/ComingSoon";
+
 export default function CashToCrypto() {
-  return <div></div>;
+  return <ComingSoon title="Cash to Crypto" />;
 }

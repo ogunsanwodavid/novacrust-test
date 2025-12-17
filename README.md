@@ -16,21 +16,28 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Assumptions and Trade-offs
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Assumptions
 
-## Learn More
+Backend APIs for exchange rates, recipient validation, and payment processing exist and are reliable.
 
-To learn more about Next.js, take a look at the following resources:
+Currency conversion rates are returned in a normalized format.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Recipient bank details are validated server-side.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Phone numbers and emails follow standard international formats.
 
-## Deploy on Vercel
+Authentication and authorization are handled outside this payment step.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Redux store persists only for the current session.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Trade-offs
+
+Redux over local state: Chosen for clarity and predictable state flow, even though local state could suffice.
+
+Basic client-side validation: Lightweight checks improve UX; strict validation is deferred to backend.
+
+Single-step form flow: Simplifies logic and UX, at the cost of scalability.
+
+No form persistence on refresh: Avoided storage complexity for simplicity.

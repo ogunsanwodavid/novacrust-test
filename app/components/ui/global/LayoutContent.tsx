@@ -4,6 +4,8 @@ import { ReactNode } from "react";
 
 import { usePathname } from "next/navigation";
 
+import { Toaster } from "sonner";
+
 import Navigation from "./Navigation";
 
 export default function LayoutContent({ children }: { children: ReactNode }) {
@@ -27,6 +29,13 @@ export default function LayoutContent({ children }: { children: ReactNode }) {
 
         {/** Layout children */}
         {children}
+
+        {/** Toaster */}
+        <Toaster
+          position="top-center"
+          className="font-outfit! z-99! mt-11.25! lg:mt-15! text-[18px]! text-green!"
+          closeButton
+        />
       </main>
     </div>
   );
